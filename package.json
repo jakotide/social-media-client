@@ -4,8 +4,12 @@
   "description": "Test",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src/**/*.js",
+    "lint-fix": "eslint src/**/*.js --cache --fix",
+    "format": "prettier --write src/**/*.js",
     "build": "sass src/scss:dist/css",
-    "start": "sass --watch src/scss:dist/css & live-server"
+    "start": "sass --watch src/scss:dist/css & live-server",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Noroff",
@@ -13,10 +17,24 @@
   "devDependencies": {
     "eslint": "^8.52.0",
     "live-server": "^1.2.2",
+    "mrm": "^4.1.22",
+    "mrm-task-lint-staged": "^7.1.22",
     "prettier": "^3.0.3",
     "sass": "^1.54.8"
   },
   "dependencies": {
     "bootstrap-dark-5": "^1.1.3"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.html": [
+      "prettier --write"
+    ],
+    "*.scss": [
+      "prettier --write"
+    ]
   }
 }
