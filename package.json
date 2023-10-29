@@ -9,7 +9,9 @@
     "format": "prettier --write src/**/*.js",
     "build": "sass src/scss:dist/css",
     "start": "sass --watch src/scss:dist/css & live-server",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "npm run test-unit",
+    "test-unit": "jest"
   },
   "keywords": [],
   "author": "Noroff",
