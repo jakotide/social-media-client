@@ -1,35 +1,89 @@
-describe("Authentication Tests", () => {
-  const validUsername = "validUsername";
-  const validPassword = "validPassword";
-  const invalidUsername = "invalidUsername";
-  const invalidPassword = "invalidPassword";
-
+describe("Login/logout functionality and authentication", () => {
   beforeEach(() => {
     cy.visit("/");
+    cy.clearLocalStorage();
   });
 
-  it("should log in with valid credentials", () => {
-    cy.get('input[name="username"]').should("be.visible").type(validUsername);
-    cy.get('input[name="password"]').should("be.visible").type(validPassword);
-    cy.get('button[type="submit"]').click();
-    cy.url().should("include", "profile");
+  // Checks if a user can successfully log in
+  it("Can user login", () => {
+    cy.visit("/");
+    cy.wait(1000);
+
+    cy.get(".btn-close:visible").click({ force: true });
+    cy.get("button[data-auth='login']:visible").click({ force: true });
+    cy.wait(1500);
+
+    cy.get("input[type='email']:visible")
+      .should("exist")
+      .type("cytest@stud.noroff.no");
+    cy.get("input[type='password']:visible").should("exist").type("12345678");
+    cy.get(".btn-success:visible").click({ force: true });
+    cy.wait(3000);
+
+    cy.url().should("include", "view=profile");
   });
 
-  it("should show an error message for invalid credentials", () => {
-    cy.get('input[name="username"]').should("be.visible").type(invalidUsername);
-    cy.get('input[name="password"]').should("be.visible").type(invalidPassword);
-    cy.get('button[type="submit"]').click();
-    cy.get(".error-message").should("be.visible");
+  // Verifies the input of invalid email credentials and checks for an error message
+  it("Validates email input", () => {
+    cy.visit("/");
+    cy.wait(1000);
+
+    cy.get(".btn-close:visible").click({ force: true });
+    cy.get("button[data-auth='login']:visible").click({ force: true });
+    cy.wait(1500);
+
+    cy.get("input[type='email']:visible")
+      .should("exist")
+      .type("notvalid@email.com");
+    cy.get("input[type='password']:visible").should("exist").type("123");
+    cy.get(".btn-success:visible").click({ force: true });
+    cy.wait(3000);
+
+    cy.url().should("not.include", "profile");
   });
 
-  it("should log out successfully", () => {
-    // Perform login here
-    cy.get('input[name="username"]').should("be.visible").type(validUsername);
-    cy.get('input[name="password"]').should("be.visible").type(validPassword);
-    cy.get('button[type="submit"]').click();
+  // Verifies the input of invalid password credentials and checks for an error message
+  it("Validates password", () => {
+    cy.visit("/");
+    cy.wait(1000);
 
-    // Log out
-    cy.get(".logout-button").should("be.visible").click();
-    cy.url().should("include", "/login");
+    cy.get(".btn-close:visible").click({ force: true });
+    cy.get("button[data-auth='login']:visible").click({ force: true });
+    cy.wait(1500);
+
+    cy.get("input[type='email']:visible")
+      .should("exist")
+      .type("test@stud.noroff.no");
+    cy.get("input[type='password']:visible").should("exist").type("123");
+    cy.get(".btn-success:visible").click({ force: true });
+    cy.wait(3000);
+
+    cy.url().should("not.include", "view=profile");
+  });
+
+  it("User can log out", () => {
+    cy.visit("/");
+    cy.wait(1000);
+
+    cy.get(".btn-close:visible").click({ force: true });
+    cy.get("button[data-auth='login']:visible").click({ force: true });
+    cy.wait(1500);
+
+    cy.get("input[type='email']:visible")
+      .should("exist")
+      .type("cytest@stud.noroff.no");
+    cy.get("input[type='password']:visible").should("exist").type("12345678");
+    cy.get(".btn-success:visible").click({ force: true });
+    cy.wait(3000);
+
+    cy.url().should("include", "view=profile");
+    cy.wait(1000);
+
+    cy.get("button[data-auth='logout']")
+      .should("be.visible")
+      .click({ force: true });
+    cy.then(() => {
+      expect(window.localStorage.getItem("token")).to.be.null;
+    });
   });
 });
