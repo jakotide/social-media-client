@@ -22,3 +22,8 @@ The user cannot submit the login form with invalid credentials and is shown a me
 The user can log out with the logout button.
 
 [![E2E Testing](https://github.com/jakotide/social-media-client/actions/workflows/e2e-testing.yml/badge.svg)](https://github.com/jakotide/social-media-client/actions/workflows/e2e-testing.yml)
+
+Issues:
+No new bugs were found in the Social media application. 
+
+I accidently formatted my workflow branch when testing prettier. 
