@@ -1,6 +1,7 @@
 Workflow CA - Noroff
 
 Live site: https://jakob-tidemand.no/social-media-client/
+
 [![Deploy static content to Pages](https://github.com/jakotide/social-media-client/actions/workflows/pages.yml/badge.svg)](https://github.com/jakotide/social-media-client/actions/workflows/pages.yml)
 
 Configurations:
