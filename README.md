@@ -1,5 +1,7 @@
 Workflow CA - Noroff
 
+Live site: https://jakob-tidemand.no/social-media-client/
+
 Configurations:
 Added ESLint and Prettier for consistent code formatting.
 Implemented Jest for unit testing.
