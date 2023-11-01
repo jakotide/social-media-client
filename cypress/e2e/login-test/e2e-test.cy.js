@@ -9,7 +9,6 @@ describe("Login/logout functionality and authentication", () => {
     cy.visit("/");
     cy.wait(1000);
 
-    cy.get(".btn-close:visible").click({ force: true });
     cy.get("button[data-auth='login']:visible").click({ force: true });
     cy.wait(1500);
 
@@ -35,8 +34,14 @@ describe("Login/logout functionality and authentication", () => {
     cy.get("input[type='email']:visible")
       .should("exist")
       .type("notvalid@email.com");
+
     cy.get("input[type='password']:visible").should("exist").type("123");
     cy.get(".btn-success:visible").click({ force: true });
+    cy.on("window:alert", (alertText) => {
+      expect(alertText).to.include(
+        "Only noroff student or teacher emails are valid",
+      );
+    });
     cy.wait(3000);
 
     cy.url().should("not.include", "profile");
@@ -56,6 +61,9 @@ describe("Login/logout functionality and authentication", () => {
       .type("test@stud.noroff.no");
     cy.get("input[type='password']:visible").should("exist").type("123");
     cy.get(".btn-success:visible").click({ force: true });
+    cy.on("window:alert", (alertText) => {
+      expect(alertText).to.include("password is incorrect");
+    });
     cy.wait(3000);
 
     cy.url().should("not.include", "view=profile");
